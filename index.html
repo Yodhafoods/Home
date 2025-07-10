@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yodha Foods - Ancient Powders, Reimagined for Today</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f8f8; /* Light background */
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        /* Custom styles for gradients and shadows */
+        .btn-primary {
+            background: linear-gradient(to right, #FF7043, #FFAB91); /* Warm orange gradient */
+            box-shadow: 0 4px 15px rgba(255, 112, 67, 0.4);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 112, 67, 0.6);
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        .section-title {
+            position: relative;
+            display: inline-block;
+            padding-bottom: 0.5rem;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background-color: #FF7043; /* Matching primary accent color */
+            border-radius: 2px;
+        }
+
+        /* Styles for the tabbed interface */
+        .tabs-container {
+            display: flex;
+            flex-wrap: wrap; /* Allow tabs to wrap on smaller screens */
+            justify-content: center;
+            gap: 0.75rem; /* Space between tabs */
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e0e0e0; /* Subtle line under tabs */
+            padding-bottom: 0.5rem;
+        }
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            color: #333;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap; /* Prevent text wrapping within a tab */
+            border: 1px solid; /* Base for category specific border */
+        }
+        .tab-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Category specific tab button colors */
+        .tab-button[data-target="vegetable-products"] {
+            background-color: #E6EE9C; /* Light Lime */
+            border-color: #C5E1A5;
+        }
+        .tab-button[data-target="vegetable-products"].active {
+            background: linear-gradient(to right, #8BC34A, #AED581);
+            color: white;
+            box-shadow: 0 4px 10px rgba(139, 195, 74, 0.3);
+            border-color: #8BC34A;
+        }
+
+        .tab-button[data-target="fruit-products"] {
+            background-color: #FFECB3; /* Light Amber */
+            border-color: #FFE082;
+        }
+        .tab-button[data-target="fruit-products"].active {
+            background: linear-gradient(to right, #FFC107, #FFD54F);
+            color: white;
+            box-shadow: 0 4px 10px rgba(255, 193, 7, 0.3);
+            border-color: #FFC107;
+        }
+
+        .tab-button[data-target="leaf-products"] {
+            background-color: #B2DFDB; /* Light Teal */
+            border-color: #80CBC4;
+        }
+        .tab-button[data-target="leaf-products"].active {
+            background: linear-gradient(to right, #009688, #4DB6AC);
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 150, 136, 0.3);
+            border-color: #009688;
+        }
+
+        .tab-button[data-target="peel-products"] {
+            background-color: #FFE0B2; /* Light Orange */
+            border-color: #FFCC80;
+        }
+        .tab-button[data-target="peel-products"].active {
+            background: linear-gradient(to right, #FF9800, #FFB74D);
+            color: white;
+            box-shadow: 0 4px 10px rgba(255, 152, 0, 0.3);
+            border-color: #FF9800;
+        }
+
+        .tab-button[data-target="flower-products"] {
+            background-color: #F8BBD0; /* Light Pink */
+            border-color: #F48FB1;
+        }
+        .tab-button[data-target="flower-products"].active {
+            background: linear-gradient(to right, #E91E63, #F06292);
+            color: white;
+            box-shadow: 0 4px 10px rgba(233, 30, 99, 0.3);
+            border-color: #E91E63;
+        }
+
+        .tab-button[data-target="seed-products"] {
+            background-color: #D7CCC8; /* Light Brown */
+            border-color: #BCAAA4;
+        }
+        .tab-button[data-target="seed-products"].active {
+            background: linear-gradient(to right, #795548, #A1887F);
+            color: white;
+            box-shadow: 0 4px 10px rgba(121, 85, 72, 0.3);
+            border-color: #795548;
+        }
+
+        .tab-button[data-target="spices-products"] {
+            background-color: #FFCDD2; /* Light Red */
+            border-color: #EF9A9A;
+        }
+        .tab-button[data-target="spices-products"].active {
+            background: linear-gradient(to right, #F44336, #E57373);
+            color: white;
+            box-shadow: 0 4px 10px rgba(244, 67, 54, 0.3);
+            border-color: #F44336;
+        }
+
+        .tab-content {
+            display: none; /* Hidden by default */
+        }
+        .tab-content.active {
+            display: grid; /* Display as grid when active */
+        }
+        .product-card-wrapper {
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeIn 0.5s ease-out forwards; /* Apply animation to individual cards */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm py-4">
+        <div class="container flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-orange-700">Yodha Foods</a>
+            <nav class="hidden md:flex space-x-6">
+                <a href="#home" class="text-gray-600 hover:text-orange-600 font-medium">Home</a>
+                <a href="#products" class="text-gray-600 hover:text-orange-600 font-medium">Products</a>
+                <a href="#about" class="text-gray-600 hover:text-orange-600 font-medium">About Us</a>
+                <a href="#contact" class="text-gray-600 hover:text-orange-600 font-medium">Contact</a>
+            </nav>
+            <!-- Mobile Menu Button - Placeholder for future functionality -->
+            <button class="md:hidden text-gray-600 hover:text-orange-600 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="bg-gradient-to-r from-orange-500 to-amber-400 text-white py-20 md:py-32 text-center rounded-b-3xl shadow-lg">
+        <div class="container">
+            <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
+                Ancient Powders.<br>Reimagined for Today.
+            </h1>
+            <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto opacity-90">
+                Dehydrated with care. Rooted in tradition. Full of real nutrition.
+            </p>
+            <a href="#products" class="btn-primary inline-block px-8 py-4 text-lg font-semibold rounded-full hover:scale-105 duration-300">
+                Explore Our Products
+            </a>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="py-16 md:py-24 bg-gray-50">
+        <div class="container text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-12 section-title text-gray-800">Our Philosophy</h2>
+            <div class="max-w-3xl mx-auto text-lg text-gray-700 leading-relaxed">
+                <p class="mb-4">
+                    At Yodha Foods, we believe in harnessing the power of nature's ancient wisdom for modern well-being. Our journey began with a simple idea: to bring back the nutritional richness of traditional foods in a convenient, accessible form.
+                </p>
+                <p class="mb-4">
+                    We meticulously select the finest natural ingredients, dehydrate them with precision to preserve their vital nutrients, and transform them into versatile powders. Our processes ensure that every product retains its inherent goodness, offering you a pure and potent source of health.
+                </p>
+                <p>
+                    Rooted in tradition and committed to quality, Yodha Foods is dedicated to empowering you with real nutrition for a vibrant life.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="py-16 md:py-24">
+        <div class="container text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-12 section-title text-gray-800">Our Product Categories</h2>
+
+            <!-- Tabs for Categories -->
+            <div class="tabs-container" role="tablist" aria-label="Product Categories">
+                <button class="tab-button active" role="tab" aria-selected="true" aria-controls="vegetable-products" id="tab-vegetable" data-target="vegetable-products">Vegetable Powders</button>
+                <button class="tab-button" role="tab" aria-selected="false" aria-controls="fruit-products" id="tab-fruit" data-target="fruit-products">Fruit Powders</button>
+                <button class="tab-button" role="tab" aria-selected="false" aria-controls="leaf-products" id="tab-leaf" data-target="leaf-products">Leaf Powders</button>
+                <button class="tab-button" role="tab" aria-selected="false" aria-controls="peel-products" id="tab-peel" data-target="peel-products">Peel Powders</button>
+                <button class="tab-button" role="tab" aria-selected="false" aria-controls="flower-products" id="tab-flower" data-target="flower-products">Flower Powders</button>
+                <button class="tab-button" role="tab" aria-selected="false" aria-controls="seed-products" id="tab-seed" data-target="seed-products">Seed Powders</button>
+                <button class="tab-button" role="tab" aria-selected="false" aria-controls="spices-products" id="tab-spices" data-target="spices-products">Spices</button>
+            </div>
+
+            <!-- Tab Content for Dehydrated Vegetable Powders -->
+            <div id="vegetable-products" class="tab-content active grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-12" role="tabpanel" aria-labelledby="tab-vegetable">
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/E6EE9C/ffffff?text=ONION+POWDER" alt="Onion Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Onion Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Concentrated flavor and nutrients.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/E6EE9C/ffffff?text=TOMATO+POWDER" alt="Tomato Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Tomato Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Rich, tangy flavor for various dishes.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/E6EE9C/ffffff?text=CARROT+POWDER" alt="Carrot Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Carrot Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Packed with beta-carotene for vitality.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/E6EE9C/ffffff?text=SPINACH+POWDER" alt="Spinach Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Spinach Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Nutrient-dense green boost.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/E6EE9C/ffffff?text=GARLIC+POWDER" alt="Garlic Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Garlic Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Aromatic and flavorful kitchen staple.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/E6EE9C/ffffff?text=BEETROOT+POWDER" alt="Beetroot Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Beetroot Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Rich in iron and nitrates.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/E6EE9C/ffffff?text=CABBAGE+POWDER" alt="Cabbage Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Cabbage Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Mild flavor, versatile for cooking.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/E6EE9C/ffffff?text=BROCCOLI+POWDER" alt="Broccoli Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Broccoli Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Green superfood for health.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/E6EE9C/ffffff?text=SWEET+POTATO+POWDER" alt="Sweet Potato Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Sweet Potato Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Naturally sweet and nutritious.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/E6EE9C/ffffff?text=KALE+POWDER" alt="Kale Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Kale Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Vitamin-rich leafy green powder.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/E6EE9C/ffffff?text=PUMPKIN+POWDER" alt="Pumpkin Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Pumpkin Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Earthy and versatile for many recipes.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/E6EE9C/ffffff?text=CELERY+POWDER" alt="Celery Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Celery Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Subtle flavor, good for savory dishes.</p>
+                </div>
+                <button class="load-more-button hidden col-span-full mt-4 px-6 py-3 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors duration-300">Load More Products</button>
+            </div>
+
+            <!-- Tab Content for Dehydrated Fruit Powders -->
+            <div id="fruit-products" class="tab-content grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-12" role="tabpanel" aria-labelledby="tab-fruit">
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFECB3/ffffff?text=STRAWBERRY+POWDER" alt="Strawberry Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Strawberry Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Sweet and tangy for desserts.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFECB3/ffffff?text=BANANA+POWDER" alt="Banana Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Banana Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Naturally sweet, great for baking.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFECB3/ffffff?text=MANGO+POWDER+(AMCHUR)" alt="Mango Powder (Amchur)" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Mango Powder (Amchur)</h4>
+                    <p class="text-gray-600 text-sm text-center">Adds a delightful tartness.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFECB3/ffffff?text=LEMON+POWDER" alt="Lemon Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Lemon Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Bright citrus flavor for various uses.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFECB3/ffffff?text=PEACH+POWDER" alt="Peach Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Peach Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Sweet and aromatic fruit powder.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFECB3/ffffff?text=PINEAPPLE+POWDER" alt="Pineapple Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Pineapple Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Tropical sweetness and tang.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFECB3/ffffff?text=BLUEBERRY+POWDER" alt="Blueberry Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Blueberry Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Antioxidant-rich and naturally sweet.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFECB3/ffffff?text=PAPAYA+POWDER" alt="Papaya Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Papaya Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Exotic flavor, good for digestion.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFECB3/ffffff?text=POMEGRANATE+POWDER" alt="Pomegranate Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Pomegranate Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Tart and vibrant, rich in antioxidants.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFECB3/ffffff?text=APPLE+POWDER" alt="Apple Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Apple Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Classic fruit flavor, versatile.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFECB3/ffffff?text=KIWI+POWDER" alt="Kiwi Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Kiwi Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Tangy and refreshing.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFECB3/ffffff?text=JACKFRUIT+POWDER" alt="Jackfruit Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Jackfruit Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Unique flavor, good for savory dishes.</p>
+                </div>
+                <button class="load-more-button hidden col-span-full mt-4 px-6 py-3 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors duration-300">Load More Products</button>
+            </div>
+
+            <!-- Tab Content for Dehydrated Leaf Powders -->
+            <div id="leaf-products" class="tab-content grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-12" role="tabpanel" aria-labelledby="tab-leaf">
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/B2DFDB/ffffff?text=MORINGA+LEAF+POWDER" alt="Moringa Leaf Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Moringa Leaf Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Superfood packed with nutrients.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/B2DFDB/ffffff?text=CURRY+LEAF+POWDER" alt="Curry Leaf Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Curry Leaf Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Aromatic and flavorful.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/B2DFDB/ffffff?text=NEEM+POWDER" alt="Neem Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Neem Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Traditional wellness herb.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/B2DFDB/ffffff?text=STEVIA+LEAF+POWDER" alt="Stevia Leaf Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Stevia Leaf Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Natural sweetener alternative.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/B2DFDB/ffffff?text=DANDELION+LEAF+POWDER" alt="Dandelion Leaf Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Dandelion Leaf Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Supports liver health.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/B2DFDB/ffffff?text=PEPPERMINT+LEAF+POWDER" alt="Peppermint Leaf Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Peppermint Leaf Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Refreshing and soothing.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/B2DFDB/ffffff?text=KALE+LEAF+POWDER" alt="Kale Leaf Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Kale Leaf Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">High in vitamins and minerals.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/B2DFDB/ffffff?text=TULSI+(HOLY+BASIL)+LEAF+POWDER" alt="Tulsi (Holy Basil) Leaf Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Tulsi (Holy Basil) Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Adaptogenic and calming.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/B2DFDB/ffffff?text=NETTLE+LEAF+POWDER" alt="Nettle Leaf Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Nettle Leaf Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Supports overall well-being.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/B2DFDB/ffffff?text=GINSENG+LEAF+POWDER" alt="Ginseng Leaf Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Ginseng Leaf Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Traditional energy booster.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/B2DFDB/ffffff?text=GINKGO+BILOBA+LEAF+POWDER" alt="Ginkgo Biloba Leaf Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Ginkgo Biloba Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Supports cognitive function.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/B2DFDB/ffffff?text=MATCHA+(GREEN+TEA)+LEAF+POWDER" alt="Matcha (Green Tea) Leaf Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Matcha (Green Tea) Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Energizing and antioxidant-rich.</p>
+                </div>
+                <button class="load-more-button hidden col-span-full mt-4 px-6 py-3 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors duration-300">Load More Products</button>
+            </div>
+
+            <!-- Tab Content for Dehydrated Peel Powders -->
+            <div id="peel-products" class="tab-content grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-12" role="tabpanel" aria-labelledby="tab-peel">
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFE0B2/ffffff?text=ORANGE+PEEL+POWDER" alt="Orange Peel Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Orange Peel Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Zesty and aromatic.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFE0B2/ffffff?text=LEMON+PEEL+POWDER" alt="Lemon Peel Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Lemon Peel Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Bright citrus flavor for baking.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFE0B2/ffffff?text=POMEGRANATE+PEEL+POWDER" alt="Pomegranate Peel Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Pomegranate Peel Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Rich in antioxidants.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFE0B2/ffffff?text=MANGO+PEEL+POWDER" alt="Mango Peel Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Mango Peel Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Unique flavor and beneficial.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFE0B2/ffffff?text=BANANA+PEEL+POWDER" alt="Banana Peel Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Banana Peel Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Natural source of nutrients.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFE0B2/ffffff?text=APPLE+PEEL+POWDER" alt="Apple Peel Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Apple Peel Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Adds natural sweetness and fiber.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFE0B2/ffffff?text=GUAVA+PEEL+POWDER" alt="Guava Peel Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Guava Peel Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Exotic flavor, good for health.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFE0B2/ffffff?text=PAPAYA+PEEL+POWDER" alt="Papaya Peel Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Papaya Peel Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Beneficial for digestion.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFE0B2/ffffff?text=PINEAPPLE+PEEL+POWDER" alt="Pineapple Peel Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Pineapple Peel Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Tropical taste and enzymes.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFE0B2/ffffff?text=CITRUS+PEEL+POWDER" alt="Citrus Peel Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Citrus Peel Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Aromatic and flavorful mix.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFE0B2/ffffff?text=KIWI+PEEL+POWDER" alt="Kiwi Peel Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Kiwi Peel Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Tangy and nutrient-rich.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFE0B2/ffffff?text=STRAWBERRY+PEEL+POWDER" alt="Strawberry Peel Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Strawberry Peel Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Sweet, subtle berry flavor.</p>
+                </div>
+                <button class="load-more-button hidden col-span-full mt-4 px-6 py-3 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors duration-300">Load More Products</button>
+            </div>
+
+            <!-- Tab Content for Dehydrated Flower Powders -->
+            <div id="flower-products" class="tab-content grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-12" role="tabpanel" aria-labelledby="tab-flower">
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/F8BBD0/ffffff?text=HIBISCUS+POWDER" alt="Hibiscus Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Hibiscus Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Vibrant color and tart flavor.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/F8BBD0/ffffff?text=ROSE+POWDER" alt="Rose Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Rose Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Fragrant and soothing.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/F8BBD0/ffffff?text=JASMINE+POWDER" alt="Jasmine Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Jasmine Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Delicate aroma and flavor.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/F8BBD0/ffffff?text=CHAMOMILE+FLOWER+POWDER" alt="Chamomile Flower Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Chamomile Flower Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Calming and relaxing.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/F8BBD0/ffffff?text=LAVENDER+POWDER" alt="Lavender Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Lavender Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Aromatic and soothing.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/F8BBD0/ffffff?text=SAFFRON+FLOWER+POWDER" alt="Saffron Flower Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Saffron Flower Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Luxurious spice and color.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/F8BBD0/ffffff?text=LOTUS+FLOWER+POWDER" alt="Lotus Flower Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Lotus Flower Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Symbolic and beneficial.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/F8BBD0/ffffff?text=CHRYSANTHEMUM+POWDER" alt="Chrysanthemum Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Chrysanthemum Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Floral and refreshing.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/F8BBD0/ffffff?text=TULIP+POWDER" alt="Tulip Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Tulip Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Unique floral essence.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/F8BBD0/ffffff?text=MARIGOLD+FLOWER+POWDER" alt="Marigold Flower Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Marigold Flower Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Vibrant color and properties.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/F8BBD0/ffffff?text=SUNFLOWER+PETAL+POWDER" alt="Sunflower Petal Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Sunflower Petal Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Bright and cheerful.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/F8BBD0/ffffff?text=ORANGE+BLOSSOM+POWDER" alt="Orange Blossom Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Orange Blossom Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Sweet and fragrant.</p>
+                </div>
+                <button class="load-more-button hidden col-span-full mt-4 px-6 py-3 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors duration-300">Load More Products</button>
+            </div>
+
+            <!-- Tab Content for Dehydrated Seed Powders -->
+            <div id="seed-products" class="tab-content grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-12" role="tabpanel" aria-labelledby="tab-seed">
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/D7CCC8/ffffff?text=PSYLLIUM+SEED+POWDER+(ISABGOL)" alt="Psyllium Seed Powder (Isabgol)" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Psyllium Seed Powder (Isabgol)</h4>
+                    <p class="text-gray-600 text-sm text-center">Excellent source of fiber.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/D7CCC8/ffffff?text=CHIA+SEED+POWDER" alt="Chia Seed Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Chia Seed Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Rich in omega-3s and fiber.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/D7CCC8/ffffff?text=PUMPKIN+SEED+POWDER" alt="Pumpkin Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Pumpkin Seed Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Nutrient-dense, earthy flavor.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/D7CCC8/ffffff?text=SUNFLOWER+SEED+POWDER" alt="Sunflower Seed Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Sunflower Seed Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Vitamin E and healthy fats.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/D7CCC8/ffffff?text=FLAX+SEED+POWDER" alt="Flax Seed Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Flax Seed Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Good source of omega-3s and fiber.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/D7CCC8/ffffff?text=WATERMELON+SEED+POWDER" alt="Watermelon Seed Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Watermelon Seed Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Nutritious and versatile.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/D7CCC8/ffffff?text=SESAME+SEED+POWDER" alt="Sesame Seed Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Sesame Seed Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Rich, nutty flavor.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/D7CCC8/ffffff?text=CAROM+SEED+POWDER+(AJWAIN+POWDER)" alt="Carom Seed Powder (Ajwain Powder)" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Carom Seed Powder (Ajwain)</h4>
+                    <p class="text-gray-600 text-sm text-center">Pungent and aromatic spice.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/D7CCC8/ffffff?text=TAMARIND+SEED+POWDER" alt="Tamarind Seed Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Tamarind Seed Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Unique flavor, traditional uses.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/D7CCC8/ffffff?text=JOJOBA+SEED+POWDER" alt="Jojoba Seed Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">JoJoba Seed Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Known for cosmetic benefits.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/D7CCC8/ffffff?text=JACK+FRUIT+SEED+POWDER" alt="Jackfruit Seed Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Jackfruit Seed Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Nutritious and versatile.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/D7CCC8/ffffff?text=JAMUN+SEED+POWDER" alt="Jamun Seed Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Jamun Seed Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Traditional health benefits.</p>
+                </div>
+                <button class="load-more-button hidden col-span-full mt-4 px-6 py-3 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors duration-300">Load More Products</button>
+            </div>
+
+            <!-- Tab Content for Spices -->
+            <div id="spices-products" class="tab-content grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-12" role="tabpanel" aria-labelledby="tab-spices">
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFCDD2/ffffff?text=TURMERIC+POWDER" alt="Turmeric Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Turmeric Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Golden spice, anti-inflammatory.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFCDD2/ffffff?text=GINGER+POWDER" alt="Ginger Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Ginger Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Warm, pungent, versatile.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFCDD2/ffffff?text=RED+CHILI+POWDER" alt="Red Chili Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Red Chili Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Adds heat and vibrant color.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFCDD2/ffffff?text=CINNAMON+POWDER" alt="Cinnamon Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Cinnamon Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Sweet and aromatic spice.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFCDD2/ffffff?text=CUMIN+POWDER" alt="Cumin Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Cumin Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Earthy, distinctive flavor.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFCDD2/ffffff?text=CORIANDER+POWDER" alt="Coriander Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Coriander Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Mild, citrusy, versatile.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFCDD2/ffffff?text=BLACK+PEPPER+POWDER" alt="Black Pepper Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Black Pepper Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Pungent and hot spice.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFCDD2/ffffff?text=CARDAMOM+POWDER" alt="Cardamom Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Cardamom Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Fragrant and exotic.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFCDD2/ffffff?text=CLOVE+POWDER" alt="Clove Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Clove Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Warm, sweet, aromatic.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFCDD2/ffffff?text=FENUGREEK+POWDER" alt="Fenugreek Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Fenugreek Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Bitter, aromatic, health benefits.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFCDD2/ffffff?text=FENNEL+POWDER" alt="Fennel Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Fennel Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Sweet, licorice-like flavor.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center product-card-wrapper">
+                    <img src="https://placehold.co/100x100/FFCDD2/ffffff?text=MUSTARD+POWDER" alt="Mustard Powder" class="mb-4 rounded-full">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Mustard Powder</h4>
+                    <p class="text-gray-600 text-sm text-center">Pungent and spicy.</p>
+                </div>
+                <button class="load-more-button hidden col-span-full mt-4 px-6 py-3 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors duration-300">Load More Products</button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Call to Action / Contact Section -->
+    <section id="contact" class="bg-gradient-to-r from-amber-400 to-orange-500 text-white py-16 md:py-24 text-center rounded-t-3xl shadow-lg">
+        <div class="container">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to Experience Real Nutrition?</h2>
+            <p class="text-lg md:text-xl mb-10 max-w-2xl mx-auto opacity-90">
+                Join the Yodha Foods family and embark on a journey towards a healthier, more vibrant you.
+            </p>
+            <a href="mailto:info@yodhafoods.com" class="btn-primary inline-block px-8 py-4 text-lg font-semibold rounded-full bg-white text-orange-700 hover:text-orange-800 hover:scale-105 duration-300">
+                Contact Us Today
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container text-center text-gray-400">
+            <p>&copy; 2025 Yodha Foods. All rights reserved.</p>
+            <div class="flex justify-center space-x-6 mt-4">
+                <a href="#" class="hover:text-white transition-colors duration-200">Privacy Policy</a>
+                <a href="#" class="hover:text-white transition-colors duration-200">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const INITIAL_DISPLAY_COUNT = 8; // Number of products to show initially
+            const LOAD_MORE_COUNT = 4; // Number of products to load per click
+
+            // Function to show a specific tab content and manage its products
+            function showTab(tabId) {
+                // Deactivate all tab buttons and hide all tab contents
+                tabButtons.forEach(button => {
+                    button.classList.remove('active');
+                    button.setAttribute('aria-selected', 'false');
+                });
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                    // Hide all product cards within deactivated tabs
+                    content.querySelectorAll('.product-card-wrapper').forEach(card => card.classList.add('hidden'));
+                    // Hide any load more buttons in deactivated tabs
+                    const loadMoreBtn = content.querySelector('.load-more-button');
+                    if (loadMoreBtn) loadMoreBtn.classList.add('hidden');
+                });
+
+                // Activate the clicked tab button and show its content
+                const clickedButton = document.querySelector(`[data-target="${tabId}"]`);
+                const targetContent = document.getElementById(tabId);
+
+                if (clickedButton && targetContent) {
+                    clickedButton.classList.add('active');
+                    clickedButton.setAttribute('aria-selected', 'true');
+
+                    const productCards = targetContent.querySelectorAll('.product-card-wrapper');
+                    const loadMoreButton = targetContent.querySelector('.load-more-button');
+
+                    // Show initial set of products for the active tab
+                    for (let i = 0; i < Math.min(INITIAL_DISPLAY_COUNT, productCards.length); i++) {
+                        productCards[i].classList.remove('hidden');
+                        // Re-apply animation for newly shown cards (optional, but makes it smooth)
+                        productCards[i].style.animation = 'none'; // Reset animation
+                        void productCards[i].offsetWidth; // Trigger reflow
+                        productCards[i].style.animation = null; // Re-enable animation
+                    }
+
+                    // Manage the Load More button for the active tab
+                    if (productCards.length > INITIAL_DISPLAY_COUNT) {
+                        if (loadMoreButton) {
+                            loadMoreButton.classList.remove('hidden');
+                        }
+                    } else {
+                        // If all products fit initially, hide the button
+                        if (loadMoreButton) {
+                            loadMoreButton.classList.add('hidden');
+                        }
+                    }
+
+                    targetContent.classList.add('active'); // This makes the grid container visible
+                }
+            }
+
+            // Add click event listeners to all tab buttons
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetId = this.dataset.target;
+                    showTab(targetId);
+                });
+            });
+
+            // Add click event listeners to all Load More buttons
+            tabContents.forEach(contentDiv => {
+                const loadMoreButton = contentDiv.querySelector('.load-more-button');
+                if (loadMoreButton) {
+                    loadMoreButton.addEventListener('click', function() {
+                        const productCards = contentDiv.querySelectorAll('.product-card-wrapper');
+                        let currentlyVisibleCount = 0;
+                        productCards.forEach(card => {
+                            if (!card.classList.contains('hidden')) {
+                                currentlyVisibleCount++;
+                            }
+                        });
+
+                        let productsShownThisClick = 0;
+                        // Start from the first hidden product after the currently visible ones
+                        for (let i = currentlyVisibleCount; i < productCards.length && productsShownThisClick < LOAD_MORE_COUNT; i++) {
+                            productCards[i].classList.remove('hidden'); // Show the product
+                            // Re-apply animation for newly shown cards
+                            productCards[i].style.animation = 'none'; // Reset animation
+                            void productCards[i].offsetWidth; // Trigger reflow
+                            productCards[i].style.animation = 'fadeIn 0.5s ease-out forwards'; // Re-enable animation
+                            productsShownThisClick++;
+                        }
+
+                        // Check if all products are now visible
+                        let newVisibleCount = 0;
+                        productCards.forEach(card => {
+                            if (!card.classList.contains('hidden')) {
+                                newVisibleCount++;
+                            }
+                        });
+
+                        if (newVisibleCount >= productCards.length) {
+                            this.classList.add('hidden'); // Hide the load more button
+                        }
+                    });
+                }
+            });
+
+            // Show the first tab by default on page load
+            if (tabButtons.length > 0) {
+                showTab(tabButtons[0].dataset.target);
+            }
+        });
+    </script>
+
+</body>
+</html>
+
